@@ -73,7 +73,7 @@ gulp.task('browser-sync', function() {
 gulp.task('watch', ['browser-sync'], function() {
 	gulp.watch('dev/**/*.pug', ['pug']);
 	gulp.watch('dev/**/*.less', ['less']);
-	//gulp.watch('dev/img/**/*.*', ['png']);
+	gulp.watch('dev/img/**/*.*', browserSync.reload);
 	gulp.watch('dev/**/*.css', browserSync.reload);
 	gulp.watch('dev/pages/*.html', browserSync.reload);
 })
@@ -139,26 +139,26 @@ gulp.task('dev', ['watch'])
 // clean public
 
 gulp.task('clean-dev', function () {
-    del(['dev/**/*.html', 'dev/**/*.css', 'pub/blocks'])
+    del(['dev/**/*.html', 'dev/**/*.css', 'build/blocks'])
 })
 
 // clean public
 
-gulp.task('clean-pub', function () {
-    return gulp.src('pub', {read: false})
+gulp.task('clean', function () {
+    return gulp.src('build', {read: false})
         .pipe(clean());
 })
 
 
 // build
 
-gulp.task('build', ['clean-pub', 'pug', 'less'], function() {
+gulp.task('build', ['clean', 'pug', 'less'], function() {
 
     var buildFonts = gulp.src('dev/fonts/*.*')
-    .pipe(gulp.dest('pub'))
+    .pipe(gulp.dest('build'))
 
     var buildImg = gulp.src('dev/img/**/*.*')
-    .pipe(gulp.dest('pub/img'))
+    .pipe(gulp.dest('build/img'))
 
     var buildJS = gulp.src('dev/js/*.js')
     .pipe(gulp.dest('build'))
@@ -167,6 +167,6 @@ gulp.task('build', ['clean-pub', 'pug', 'less'], function() {
     .pipe(gulp.dest('build/styles'))
 
     var buildHtml = gulp.src('dev/**/*.html')
-    .pipe(gulp.dest('pub'))
+    .pipe(gulp.dest('build'))
 
 })
